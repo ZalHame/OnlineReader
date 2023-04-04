@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "308319939881",
+    "project_id": "onlinereader-67827",
+    "storage_bucket": "onlinereader-67827.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:308319939881:android:3f89fcd5b3c0aec2321b38",
+        "android_client_info": {
+          "package_name": "com.example.online_reader"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "308319939881-75kukt0b3e2i44tqtqge32fihr9llpcj.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyANuHOr3gN-4lxmTHkCxZ2CsBFvSdPQ3CM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "308319939881-75kukt0b3e2i44tqtqge32fihr9llpcj.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
