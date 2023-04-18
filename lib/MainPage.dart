@@ -5,42 +5,47 @@ class MainPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      drawer: Drawer(),
-      appBar: AppBar(
-        centerTitle: true,
-        title: const Text(
-          "Онлайн читалка",
-          textAlign: TextAlign.center,
-        ),
-        foregroundColor: Colors.white,
-        backgroundColor: Colors.black,
-      ),
-      body: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        mainAxisSize: MainAxisSize.max,
-        children: [
-          Container(
-            color: Colors.blue,
-            height: 50,
-            child: Row(
-              children: [
-                Image.asset("Images/bookshelf.png"),
-                Text("Каталог"),
-              ],
-            ),
+    return DefaultTabController(
+      length: 2,
+      child: Scaffold(
+        drawer: Drawer(),
+        appBar: AppBar(
+          centerTitle: true,
+          title: const Text(
+            "Онлайн читалка",
           ),
-          Container(
-            color: Colors.blue,
-            height: 50,
-            child: Row(
-              children: [
-                Image.asset("Images/glass.png"),
-                Text("Поиск"),
-              ],
+          backgroundColor: Colors.blue,
+          foregroundColor: Colors.white,
+          bottom: const TabBar(indicatorColor: Colors.white, tabs: <Widget>[
+            Tab(
+              text: 'Каталог',
+              icon: Icon(
+                Icons.my_library_books_outlined,
+                color: Colors.white,
+              ),
             ),
-          )
-        ],
+            Tab(
+                text: 'Закладки',
+                icon: Icon(
+                  Icons.bookmark,
+                  color: Colors.white,
+                )),
+          ]),
+        ),
+        body: const TabBarView(
+            physics: NeverScrollableScrollPhysics(),
+            children: <Widget>[
+              Center(
+                child: Text(
+                  'reader',
+                ),
+              ),
+              Center(
+                child: Text(
+                  'zaklad',
+                ),
+              )
+            ]),
       ),
     );
   }
