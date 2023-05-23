@@ -1,3 +1,4 @@
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'BookPage.dart';
@@ -83,7 +84,16 @@ class MainPage extends StatelessWidget {
   }
 }
 
+
+
 class BookListView extends StatelessWidget {
+  Future<String> getPdfUrl(String bookName) async {
+    String pdfUrl;
+    Reference storageRef = FirebaseStorage.instance.ref().child('$bookName.pdf');
+    pdfUrl = await storageRef.getDownloadURL();
+    return pdfUrl;
+  }
+
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<QuerySnapshot>(
@@ -98,26 +108,36 @@ class BookListView extends StatelessWidget {
         return ListView.builder(
           itemCount: books?.length,
           itemBuilder: (context, index) {
-            //final bookData = books[index].data();
-            final book = Book(
-              Name: snapshot.data?.docs[index]['Name'],
-              Description: snapshot.data?.docs[index]['Description'],
-              Author: snapshot.data?.docs[index]['Author'],
-              Genre: snapshot.data?.docs[index]['Genre'],
-              Img: snapshot.data?.docs[index]['Img'],
-              Pdf: snapshot.data?.docs[index]['Pdf'],
+            final bookData = (books?[index].data() as Map<String, dynamic>);
+            final bookName = bookData['Name'] as String;
+
+            return FutureBuilder<String>(
+              future: getPdfUrl(bookName),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return ListTile(
+                    title: Text(bookName),
+                    subtitle: Text('Загрузка PDF...'),
+                  );
+                }
+                if (snapshot.hasData) {
+                  final pdfUrl = snapshot.data!;
+                  final book = Book(
+                    Name: bookData['Name'] as String,
+                    Description: bookData['Description'] as String,
+                    Author: bookData['Author'] as String,
+                    Genre: bookData['Genre'] as String,
+                    Img: bookData['Img'] as String,
+                    Pdf: pdfUrl,
+                  );
+                  return BookListItem(book: book);
+                }
+                return ListTile(
+                  title: Text(bookName),
+                  subtitle: Text('PDF недоступен'),
+                );
+              },
             );
-            final String fileName = book.Name +
-                '.pdf'; // Имя файла, составленное на основе названия книги
-            final String filePath =
-                'pdfs/$fileName'; // Путь к файлу в Firebase Storage
-
-            final firebase_storage.Reference storageRef =
-                firebase_storage.FirebaseStorage.instance.ref().child(filePath);
-
-            final String downloadURL = storageRef.getDownloadURL() as String;
-            book.Pdf = downloadURL;
-            return BookListItem(book: book);
           },
         );
       },

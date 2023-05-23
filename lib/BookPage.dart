@@ -64,7 +64,7 @@ class BookPage extends StatelessWidget {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => BookPdfPage(pdfUrl: book.Pdf),
+                        builder: (context) => BookPdfPage(book: book),
                       ),
                     );
                   },
@@ -87,19 +87,19 @@ class BookPage extends StatelessWidget {
 }
 
 class BookPdfPage extends StatelessWidget {
-  final String pdfUrl;
+  final Book book;
 
-  BookPdfPage({required this.pdfUrl});
+  BookPdfPage({required this.book});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Чтение книги'),
+        title: Text(book.Name),
         backgroundColor: Colors.blue,
       ),
       body: PDFView(
-        filePath: pdfUrl,
+        filePath: book.Pdf,
       ),
     );
   }
