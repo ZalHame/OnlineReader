@@ -2,7 +2,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'BookPage.dart';
-import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
+
 
 import 'Book.dart';
 
@@ -89,7 +89,7 @@ class MainPage extends StatelessWidget {
 class BookListView extends StatelessWidget {
   Future<String> getPdfUrl(String bookName) async {
     String pdfUrl;
-    Reference storageRef = FirebaseStorage.instance.ref().child('$bookName.pdf');
+    Reference storageRef = FirebaseStorage.instance.ref().child('Pdf').child('$bookName.pdf');
     pdfUrl = await storageRef.getDownloadURL();
     return pdfUrl;
   }
@@ -110,18 +110,18 @@ class BookListView extends StatelessWidget {
           itemBuilder: (context, index) {
             final bookData = (books?[index].data() as Map<String, dynamic>);
             final bookName = bookData['Name'] as String;
-
+          
             return FutureBuilder<String>(
               future: getPdfUrl(bookName),
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
+              builder: (context, pdfSnapshot) {
+                if (pdfSnapshot.connectionState == ConnectionState.waiting) {
                   return ListTile(
                     title: Text(bookName),
                     subtitle: Text('Загрузка PDF...'),
                   );
                 }
-                if (snapshot.hasData) {
-                  final pdfUrl = snapshot.data!;
+                if (pdfSnapshot.hasData) {
+                  final pdfUrl = pdfSnapshot.data!;
                   final book = Book(
                     Name: bookData['Name'] as String,
                     Description: bookData['Description'] as String,
