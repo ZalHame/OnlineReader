@@ -4,7 +4,6 @@ class Book {
   String Author;
   String Genre;
   String Img;
-  String Pdf;
 
   Book({
     required this.Name,
@@ -12,7 +11,6 @@ class Book {
     required this.Author,
     required this.Genre,
     required this.Img,
-    required this.Pdf,
   });
 
   factory Book.fromMap(Map<String, dynamic> map) {
@@ -22,7 +20,6 @@ class Book {
       Author: map['Author'] ?? 'Неизвестный автор',
       Genre: map['Genre'] ?? 'Неизвестный жанр',
       Img: map['Img'] ?? 'https://example.com/default-image.jpg',
-      Pdf: map['Img'] ?? '?',
     );
   }
 }

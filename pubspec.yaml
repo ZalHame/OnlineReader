@@ -38,6 +38,7 @@ dependencies:
   fluttertoast: ^8.2.1
   flutter:
     sdk: flutter
+  syncfusion_flutter_pdfviewer: ^20.4.28
 
 
   # The following adds the Cupertino Icons font to your application.
@@ -79,6 +80,19 @@ flutter:
     - Images/bookshelf.png
     - Images/glass.png
     - Images/icon.png
+    - pdf/Песнь надежды. Том 1. Том 2..pdf
+    - pdf/Грань. Сила..pdf
+    - pdf/Даяна I. Неофит Мглы. Том 1.pdf
+    - pdf/Даяна I. Дорогой Хаоса. Том 3.pdf
+    - pdf/Грань. Влияние..pdf
+    - pdf/Грань. Статус..pdf
+    - pdf/Грань. Ум..pdf
+    - pdf/Даяна I. Мастер Мглы. Том 2.pdf
+    - pdf/Даяна I. Во имя Порядка. Том 4.pdf
+    - pdf/Даяна I. Путь наверх. Том 6.pdf
+    - pdf/Даяна I. Стезёй Боли. Том 7.pdf
+    - pdf/Даяна I. Тропой Гнева. Том 5.pdf
+    - pdf/Грань. Власть..pdf
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

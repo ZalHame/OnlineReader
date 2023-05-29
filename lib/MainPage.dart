@@ -1,11 +1,13 @@
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:online_reader/service.dart';
 import 'BookPage.dart';
-import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
-
-
 import 'Book.dart';
+
+DbConnection dbconnection = DbConnection();
+var user = FirebaseAuth.instance;
 
 class MainPage extends StatelessWidget {
   const MainPage({super.key});
@@ -42,6 +44,16 @@ class MainPage extends StatelessWidget {
                 onTap: () {
                   // Действия при нажатии на "Мой профиль"
                   Navigator.pushNamed(context, '/Profile'); // Закрываем drawer
+                  // Дополнительные действия, например, переход на экран просмотра профиля
+                },
+              ),
+              ListTile(
+                leading: Icon(Icons.exit_to_app),
+                title: Text('Выйти'),
+                onTap: () {
+                  // Действия при нажатии на "Мой профиль"
+                  dbconnection.logOut();
+                  Navigator.pushNamed(context, '/'); // Закрываем drawer
                   // Дополнительные действия, например, переход на экран просмотра профиля
                 },
               ),
@@ -110,20 +122,7 @@ class BookListView extends StatelessWidget {
                     Author: bookData['Author'] as String,
                     Genre: bookData['Genre'] as String,
                     Img: bookData['Img'] as String,
-                    Pdf: '',
                   );
-                  // Получаем ссылку на файл PDF из Firebase Storage
-                  final pdfFileName = bookData['Name'] as String;
-                  final pdfReference = firebase_storage.FirebaseStorage.instance.ref().child('Pdf').child('$pdfFileName');
-                  pdfReference.getDownloadURL().then((url) {
-                    // Обновляем поле 'Pdf' объекта book с полученным URL-адресом файла PDF
-                    book.Pdf = url;
-                    // Обновляем список элементов, чтобы отразить изменения
-                    // Метод setState() будет нужен, если вы используете StatefulWidget
-                  }).catchError((error) {
-                    // Обработка ошибок, если не удалось получить URL-адрес файла PDF
-                    print('Ошибка загрузки файла PDF: $error');
-                  });
                   return BookListItem(book: book);
                 }
               },
@@ -136,8 +135,33 @@ class BookListView extends StatelessWidget {
 class FavoriteBookListView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    // Вывод избранных книг
-    return Container();
+    return StreamBuilder<QuerySnapshot>(
+      stream: FirebaseFirestore.instance.collection(user.currentUser!.email.toString()).snapshots(),
+      builder: (context, snapshot) {
+        if (!snapshot.hasData) {
+          return Center(
+            child: CircularProgressIndicator(),
+          );
+        }
+        final books = snapshot.data?.docs;
+        return ListView.builder(
+          itemCount: books?.length,
+          itemBuilder: (context, index) {
+            final bookData = (books?[index].data() as Map<String, dynamic>);
+                if (snapshot.hasData) {
+                  final book = Book(
+                    Name: bookData['Name'] as String,
+                    Description: bookData['Description'] as String,
+                    Author: bookData['Author'] as String,
+                    Genre: bookData['Genre'] as String,
+                    Img: bookData['Img'] as String,
+                  );
+                  return BookListItem(book: book);
+                }
+              },
+        );
+      },
+    );
   }
 }
 

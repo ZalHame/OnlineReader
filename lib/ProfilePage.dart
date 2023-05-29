@@ -1,5 +1,11 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:online_reader/Book.dart';
+import 'package:online_reader/BookPage.dart';
 
+var user = FirebaseAuth.instance;
+String books = 'Мои книги';
 class ProfilePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -27,21 +33,97 @@ class ProfilePage extends StatelessWidget {
             ),
             SizedBox(height: 10),
             Text(
-              'example@gmail.com',
+              user.currentUser!.email.toString(),
               style: TextStyle(
                 fontSize: 16,
                 color: Colors.blue,
               ),
             ),
             SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: () {
-                // Действия при нажатии на кнопку
-              },
-              child: Text('Редактировать профиль'),
-              style: ElevatedButton.styleFrom(
-                primary: Colors.blue,
-                onPrimary: Colors.white,
+            Text(
+              books,
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+                color: Colors.blue,
+              ),
+            ),
+            SizedBox(height: 10),
+            Expanded(
+              child: StreamBuilder<QuerySnapshot>(
+                stream: FirebaseFirestore.instance.collection(user.currentUser!.email.toString()).snapshots(),
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    final books = snapshot.data!.docs;
+
+                    return ListView.builder(
+                      scrollDirection: Axis.horizontal,
+                      itemCount: books.length,
+                      itemBuilder: (context, index) {
+                        final Map<String, dynamic> book = books[index].data() as Map<String, dynamic>;
+                        final mybook = Book(
+                        Name: book['Name'] as String,
+                        Description: book['Description'] as String,
+                        Author: book['Author'] as String,
+                        Genre: book['Genre'] as String,
+                        Img: book['Img'] as String,
+                  );
+                        return Padding(
+                          padding: EdgeInsets.all(8.0),
+                          child: InkWell(
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => BookPage(book: mybook),
+                                ),
+                              );
+                            },
+                            child: Column(
+                            children: [
+                              Container(
+                                width: 120,
+                                height: 160,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(8),
+                                  image: DecorationImage(
+                                    image: NetworkImage(book['Img'] ?? ''),
+                                    fit: BoxFit.cover,
+                                  ),
+                                ),
+                              ),
+                              SizedBox(height: 8),
+                              Container(
+                                child: Text(
+                                book['Name'] ?? '',
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              ),
+                              
+                              SizedBox(height: 4),
+                              Text(
+                                book['Author'] ?? '',
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  color: Colors.grey,
+                                ),
+                              ),
+                            ],
+                          ),
+                          )
+                          
+                        );
+                      },
+                    );
+                  } else if (snapshot.hasError) {
+                    return Text('Ошибка при загрузке данных');
+                  } else {
+                    return CircularProgressIndicator();
+                  }
+                },
               ),
             ),
           ],

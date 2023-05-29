@@ -65,7 +65,9 @@ class RegisterPage extends StatelessWidget {
                       {} 
                       else {
                         return;
-                      }                  
+                      }     
+                      email.clear();
+                      password.clear();             
                       Navigator.pushNamed(context, '/');
                 },
                 child: Text('Зарегистрироваться'),
@@ -85,6 +87,8 @@ class RegisterPage extends StatelessWidget {
             TextButton(
               onPressed: () {
                 Navigator.pushNamed(context, '/');
+                email.clear();
+                password.clear();
               },
               child: Text(
                 'Войти',

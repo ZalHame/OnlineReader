@@ -58,6 +58,8 @@ class LoginPage extends StatelessWidget {
                 onPressed: () async {
                   UserModel? user = await dbconnection.signIn(
                       email.text, password.text);
+                      email.clear();
+                      password.clear();
                     if (user != null) {
                       
                     }
@@ -67,7 +69,7 @@ class LoginPage extends StatelessWidget {
                         context: context,
                         builder: (BuildContext context) {
                         return AlertDialog(
-                          backgroundColor: const Color.fromARGB(255, 134, 145, 159),
+                          backgroundColor: const Color.fromARGB(255, 0, 140, 255),
                           title: const Text('Error', style: TextStyle(color: Color.fromARGB(255, 233, 241, 243))),
                           content: const Text('Invalid E-mail or Password', style: TextStyle(color: Color.fromARGB(255, 233, 241, 243))),
                           actions: <Widget>[
@@ -106,6 +108,8 @@ class LoginPage extends StatelessWidget {
             TextButton(
               onPressed: () {
                 Navigator.pushNamed(context, '/Reg');
+                email.clear();
+                password.clear();
               },
               child: Text(
                 'Зарегистрироваться',
