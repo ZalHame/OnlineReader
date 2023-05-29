@@ -1,5 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:online_reader/Auth.dart';
+import 'package:online_reader/Reg.dart';
 
 import 'MainPage.dart';
 import 'ProfilePage.dart';
@@ -26,7 +28,9 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       initialRoute: '/',
       routes: {
-        '/': (context) => const MainPage(),
+        '/': (context) => LoginPage(),
+        '/Reg': (context) => RegisterPage(),
+        '/Main': (context) => MainPage(),
         '/Profile': (context) => ProfilePage(),
       },
     );

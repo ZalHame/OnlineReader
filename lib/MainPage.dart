@@ -113,8 +113,8 @@ class BookListView extends StatelessWidget {
                     Pdf: '',
                   );
                   // Получаем ссылку на файл PDF из Firebase Storage
-                  final pdfFileName = bookData['Name'] as String; // Предполагается, что поле 'Pdf' содержит имя файла
-                  final pdfReference = firebase_storage.FirebaseStorage.instance.ref('Pdf/$pdfFileName');
+                  final pdfFileName = bookData['Name'] as String;
+                  final pdfReference = firebase_storage.FirebaseStorage.instance.ref().child('Pdf').child('$pdfFileName');
                   pdfReference.getDownloadURL().then((url) {
                     // Обновляем поле 'Pdf' объекта book с полученным URL-адресом файла PDF
                     book.Pdf = url;
