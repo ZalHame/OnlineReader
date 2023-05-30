@@ -125,24 +125,10 @@ Future<void> checkIfBookIsFavorite() async {
               ),
             ),
             SizedBox(height: 16),
-            Center(
-              child: Container(
-                width: 150,
-                child: ElevatedButton(
-                  onPressed: toggleFavorite,
-                  child: Icon(
-                    isFavorite ? Icons.favorite : Icons.favorite_border,
-                    color: isFavorite ? Colors.red : null,
-                    size: 30,
-                  ),
-                  style: ElevatedButton.styleFrom(
-                    padding: EdgeInsets.all(16),
-                    shape: CircleBorder(),
-                    
-                  ),
-                ),
-              ),
-            ),
+            
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
             SizedBox(height: 16),
             Center(
               child: Container(
@@ -169,7 +155,7 @@ Future<void> checkIfBookIsFavorite() async {
                 ),
               ),
             ),
-            SizedBox(height: 16),
+            SizedBox(width: 16),
              Center(
               child: Container(
                 child: ElevatedButton(
@@ -212,6 +198,28 @@ Future<void> checkIfBookIsFavorite() async {
                 ),
               ),
             ),
+              ],
+            ),
+            SizedBox(height: 16),
+            Center(
+              child: Container(
+                width: 150,
+                child: ElevatedButton(
+                  onPressed: toggleFavorite,
+                  child: Icon(
+                    isFavorite ? Icons.favorite : Icons.favorite_border,
+                    color: isFavorite ? Colors.red : null,
+                    size: 30,
+                  ),
+                  style: ElevatedButton.styleFrom(
+                    padding: EdgeInsets.all(16),
+                    shape: CircleBorder(),
+                    
+                  ),
+                ),
+              ),
+            ),
+            
            SingleChildScrollView(
   padding: EdgeInsets.all(16.0),
   child: Column(
